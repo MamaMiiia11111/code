@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Виды баз данных</title>
+  <style>
+    :root {
+      --main-bg: #EDE7CF;
+      --card-bg: #D4CEB0;
+      --accent: #A79E8B;
+      --text-dark: #827055;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--main-bg);
+      color: var(--text-dark);
+    }
+
+    header {
+      background-color: var(--text-dark);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px;
+      width: 250px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 10px rgba(130, 112, 85, 0.2);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: var(--card-bg);
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      color: var(--text-dark);
+    }
+
+    .close-btn {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .close-btn:hover {
+      background-color: #827055;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Виды баз данных</h1>
+  </header>
+
+  <div class="container">
+    <div class="card" onclick="openModal('relational')">Реляционная</div>
+    <div class="card" onclick="openModal('document')">Документно-ориентированная</div>
+    <div class="card" onclick="openModal('graph')">Графовая</div>
+    <div class="card" onclick="openModal('keyvalue')">Ключ-значение</div>
+    <div class="card" onclick="openModal('column')">Колонко-ориентированная</div>
+    <div class="card" onclick="openModal('object')">Объектно-ориентированная</div>
+    <div class="card" onclick="openModal('hierarchical')">Иерархическая</div>
+    <div class="card" onclick="openModal('network')">Сетевая</div>
+  </div>
+
+  <div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-content" id="modal-content">
+      <p>...</p>
+      <button class="close-btn" onclick="closeModal()">Закрыть</button>
+    </div>
+  </div>
+
+  <script>
+    const descriptions = {
+      relational: `
+        <h2>Реляционная база данных</h2>
+        <p>Использует таблицы с отношениями. Примеры: MySQL, PostgreSQL, Oracle.</p>
+        <p>Применяется в банковских системах, магазинах, ERP-системах.</p>
+      `,
+      document: `
+        <h2>Документно-ориентированная</h2>
+        <p>Хранит данные в виде документов (например, JSON). Пример: MongoDB.</p>
+        <p>Используется в веб-разработке, системах логирования.</p>
+      `,
+      graph: `
+        <h2>Графовая база данных</h2>
+        <p>Данные представлены в виде узлов и связей. Пример: Neo4j.</p>
+        <p>Применяется в социальных сетях, рекомендательных системах.</p>
+      `,
+      keyvalue: `
+        <h2>Ключ-значение</h2>
+        <p>Простая структура: ключ и значение. Примеры: Redis, DynamoDB.</p>
+        <p>Используется для кэширования, хранения сессий.</p>
+      `,
+      column: `
+        <h2>Колонко-ориентированная</h2>
+        <p>Хранит данные по колонкам, а не по строкам. Пример: Apache Cassandra.</p>
+        <p>Эффективна для аналитики и обработки больших данных.</p>
+      `,
+      object: `
+        <h2>Объектно-ориентированная</h2>
+        <p>Данные представлены в виде объектов, как в ООП. Пример: db4o.</p>
+        <p>Применяется в сложных приложениях с богатой логикой.</p>
+      `,
+      hierarchical: `
+        <h2>Иерархическая база данных</h2>
+        <p>Данные организованы как дерево (родитель-ребёнок). Пример: IBM IMS.</p>
+        <p>Используется в старых системах и справочниках.</p>
+      `,
+      network: `
+        <h2>Сетевая база данных</h2>
+        <p>Позволяет одному элементу быть связанным с несколькими. Пример: Integrated Data Store (IDS).</p>
+        <p>Применяется в телекоммуникациях и старых корпоративных системах.</p>
+      `
+    };
+
+    function openModal(type) {
+      const modal = document.getElementById('modal');
+      const content = document.getElementById('modal-content');
+      content.querySelector('p').innerHTML = descriptions[type];
+      modal.style.display = 'flex';
+    }
+
+    function closeModal(event) {
+      const modal = document.getElementById('modal');
+      if (!event || event.target === modal || event.target.classList.contains('close-btn')) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
